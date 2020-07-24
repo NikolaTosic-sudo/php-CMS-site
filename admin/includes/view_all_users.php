@@ -1,3 +1,5 @@
+<?php include "delete_modal.php"; ?>
+
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -46,7 +48,7 @@
     echo "<td><a href='users.php?change_to_admin=$user_id'>Admin</a></td>";
     echo "<td><a href='users.php?change_to_sub=$user_id'>Subscriber</a></td>";
     echo "<td><a href='users.php?source=edit_user&u_id=$user_id'>EDIT</a></td>";
-    echo "<td><a href='users.php?delete=$user_id'>DELETE</a></td>";
+    echo "<td><a rel='$user_id' href='javascript:void(0)' class='delete_link'>DELETE</a></td>";
 
 
       }
@@ -107,3 +109,27 @@ if (isset($_GET['delete'])) {
 
 
 ?>
+
+<script src="js/jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(".delete_link").on('click', function () {
+
+            var id = $(this).attr("rel");
+
+            var delete_url = "users.php?delete="+ id +" ";
+
+            $(".modal_delete").attr("href", delete_url);
+
+            $("#myModal").modal('show');
+
+        })
+
+    })
+
+
+</script>
+

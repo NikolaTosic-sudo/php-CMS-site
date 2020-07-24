@@ -1,3 +1,5 @@
+<?php include "delete_modal.php"; ?>
+
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -55,7 +57,7 @@
         echo "<td><a href='comments.php?approve=$comment_id'>Approve</a></td>";
         echo "<td><a href='comments.php?disapprove=$comment_id'>Disapprove</a></td>";
         echo "<td><a href='comments.php?source=edit_comment&c_id=$comment_id'>EDIT</a></td>";
-        echo "<td><a href='comments.php?delete=$comment_id'>DELETE</a></td>";
+        echo "<td><a rel='$comment_id' href='javascript:void(0)' class='delete_link'>DELETE</a></td>";
         echo "</tr>";
 
     }
@@ -110,3 +112,26 @@ if (isset($_GET['delete'])) {
 
 
 ?>
+
+<script src="js/jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(".delete_link").on('click', function () {
+
+            var id = $(this).attr("rel");
+
+            var delete_url = "comments.php?delete="+ id +" ";
+
+            $(".modal_delete").attr("href", delete_url);
+
+            $("#myModal").modal('show');
+
+        })
+
+    })
+
+</script>
+
