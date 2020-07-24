@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
                             </div>
 
                             <div class="form-group">
-                                <textarea name="body" id="body"></textarea>
+                                <textarea class="form-control" rows="7" name="body" id="text"></textarea>
                             </div>
 
                             <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Send Email">
