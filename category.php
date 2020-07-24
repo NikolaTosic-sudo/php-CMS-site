@@ -13,16 +13,19 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
-
             <?php
 
             if (isset($_GET['category_id'])) {
 
                 $category_id = $_GET['category_id'];
+
+                $query = "SELECT * FROM categories WHERE cat_id = $category_id";
+
+                $select_category = mysqli_query($connection, $query);
+
+                $row = mysqli_fetch_assoc($select_category);
+
+                $category_title = $row['cat_title'];
 
             }
 
@@ -39,6 +42,11 @@
                 $post_content = substr($row['post_content'],0,100);
 
                 ?>
+
+                <h1 class="page-header">
+                    All posts
+                    <small>in <?php echo $category_title?></small>
+                </h1>
 
 
                 <h2>

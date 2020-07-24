@@ -13,11 +13,6 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
-
             <?php
 
             if(isset($_GET['p_id'])) {
@@ -45,12 +40,11 @@
                 ?>
 
 
-                <h2>
-                    <a href=""><?php echo $post_title ?></a>
-                </h2>
-                <p class="lead">
-                    by <a href="index.php"><?php echo $post_author ?></a>
-                </p>
+                    <h1 class="page-header">
+                        <?php echo $post_title ?>
+                        <small>by <?php echo $post_author?></small>
+                    </h1>
+
                 <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date ?></p>
                 <hr>
                 <img class="img-responsive" src="images/<?php echo $post_image?>" alt="">

@@ -14,8 +14,8 @@
             <div class="col-md-8">
 
                 <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
+                    All posts
+                    <small>Read the one you think is the best</small>
                 </h1>
 
                 <?php
