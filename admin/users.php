@@ -2,6 +2,12 @@
 
 include "includes/admin_header.php";
 
+    if (!is_admin($_SESSION['username'])) {
+
+        header("Location: index.php");
+
+    }
+
 ?>
 
 <body>
