@@ -11,46 +11,54 @@
      $email = escape($_POST['email']);
      $password = escape($_POST['password']);
 
-     if (alreadyExists('username', $username)) {
 
-         echo "<script>alert('Username already exists')</script>";
+     if (strlen($username) < 4) {
 
-     } else if (alreadyExists('user_email', $email)) {
-
-         echo "<script>alert('Email already exists')</script>";
+         echo "<script>alert('Username has to be longer than 4 characters')</script>";
 
      } else {
 
-     if (!empty($username) && !empty($email) && !empty($password)) {
 
-         $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+         if (alreadyExists('username', $username)) {
 
-         $query = "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) ";
-         $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber', '', '', '')";
+             echo "<script>alert('Username already exists')</script>";
 
-         $registrationQuery = mysqli_query($connection, $query);
+         } else if (alreadyExists('user_email', $email)) {
 
-         if (!$registrationQuery) {
-
-             die("QUERY FAILED" . mysqli_error($connection));
+             echo "<script>alert('Email already exists')</script>";
 
          } else {
 
-             echo "<script>alert('Successfully Registered')</script>";
+             if (!empty($username) && !empty($email) && !empty($password)) {
 
-         }
+                 $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-     } else {
+                 $query = "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) ";
+                 $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber', '', '', '')";
 
-         echo "<script> alert('FIELDS CAN NOT BE EMPTY')</script>";
+                 $registrationQuery = mysqli_query($connection, $query);
 
-     }
+                 if (!$registrationQuery) {
+
+                     die("QUERY FAILED" . mysqli_error($connection));
+
+                 } else {
+
+                     echo "<script>alert('Successfully Registered')</script>";
+
+                 }
+
+             } else {
+
+                 echo "<script> alert('FIELDS CAN NOT BE EMPTY')</script>";
+
+             }
 
 
 
 
 
- }}
+ }}}
 
 
  ?>
