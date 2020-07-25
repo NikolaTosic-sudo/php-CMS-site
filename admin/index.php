@@ -42,10 +42,7 @@ include "includes/admin_header.php";
 
                                         <?php
 
-                                        $query = "SELECT * FROM posts";
-                                        $select_all_posts = mysqli_query($connection, $query);
-
-                                        $post_count = mysqli_num_rows($select_all_posts);
+                                        $post_count = recordCount('posts');
 
                                         ?>
 
@@ -74,10 +71,7 @@ include "includes/admin_header.php";
 
                                         <?php
 
-                                        $query = "SELECT * FROM comments";
-                                        $select_all_comments = mysqli_query($connection, $query);
-
-                                        $comment_count = mysqli_num_rows($select_all_comments);
+                                        $comment_count =   recordCount('comments')
 
                                         ?>
 
@@ -106,10 +100,7 @@ include "includes/admin_header.php";
 
                                         <?php
 
-                                        $query = "SELECT * FROM users";
-                                        $select_all_users = mysqli_query($connection, $query);
-
-                                        $users_count = mysqli_num_rows($select_all_users);
+                                        $users_count = recordCount('users');
 
                                         ?>
 
@@ -138,10 +129,7 @@ include "includes/admin_header.php";
 
                                         <?php
 
-                                        $query = "SELECT * FROM categories";
-                                        $select_all_cat = mysqli_query($connection, $query);
-
-                                        $cat_count = mysqli_num_rows($select_all_cat);
+                                        $cat_count = recordCount('categories')
 
                                         ?>
 
