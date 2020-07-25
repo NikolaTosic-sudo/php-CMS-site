@@ -1,8 +1,8 @@
+<?php session_start() ; ?>
 <?php include "db.php"; ?>
 <?php include "../admin/functions.php" ; ?>
 <?php ob_start() ?>
 
-<?php session_start() ; ?>
 
 <?php
 
