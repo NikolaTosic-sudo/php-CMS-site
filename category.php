@@ -28,7 +28,13 @@
                 $category_title = $row['cat_title'];
 
 
-                if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+                if ($_SESSION['username'] == null){
+
+                    $query = "SELECT * FROM posts WHERE post_category_id = $category_id AND post_status = 'published'";
+
+                }
+
+                else if (is_admin($_SESSION['username'])) {
 
                     $query = "SELECT * FROM posts WHERE post_category_id = $category_id";
 
@@ -37,7 +43,6 @@
                     $query = "SELECT * FROM posts WHERE post_category_id = $category_id AND post_status = 'published'";
 
                 }
-
 
             $select_all_posts = mysqli_query($connection, $query);
 

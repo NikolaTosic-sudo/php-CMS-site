@@ -37,13 +37,20 @@
                     $page_1 = ($page * 5) - 5;
 
                 }
-                if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin') {
+
+                if ($_SESSION['username'] == null){
+
+                    $post_count_query = "SELECT * FROM posts WHERE post_status = 'published'";
+
+                }
+
+                else if (is_admin($_SESSION['username'])) {
 
                     $post_count_query = "SELECT * FROM posts";
 
                 } else {
 
-                    $post_count_query = "SELECT * FROM posts WHERE post_status = 'draft'";
+                    $post_count_query = "SELECT * FROM posts WHERE post_status = 'published'";
 
                 }
 
