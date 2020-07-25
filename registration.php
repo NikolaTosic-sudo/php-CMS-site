@@ -11,6 +11,16 @@
      $email = escape($_POST['email']);
      $password = escape($_POST['password']);
 
+     if (alreadyExists('username', $username)) {
+
+         echo "<script>alert('Username already exists')</script>";
+
+     } else if (alreadyExists('user_email', $email)) {
+
+         echo "<script>alert('Email already exists')</script>";
+
+     } else {
+
      if (!empty($username) && !empty($email) && !empty($password)) {
 
          $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
@@ -40,7 +50,7 @@
 
 
 
- }
+ }}
 
 
  ?>

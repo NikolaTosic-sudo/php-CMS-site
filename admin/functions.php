@@ -134,7 +134,7 @@ function recordCount($table) {
     return $result;
 }
 
-function is_admin($username = '') {
+function is_admin($username) {
 
     global $connection;
 
@@ -157,5 +157,28 @@ function is_admin($username = '') {
     }
 
 }
+
+function alreadyExists($row, $object) {
+
+    global $connection;
+
+    $query = "SELECT $row FROM users WHERE $row = '$object'";
+
+    $result = mysqli_query($connection, $query);
+
+    confirmQuery($result);
+
+    if (mysqli_num_rows($result) > 0) {
+
+        return true;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
 
 
