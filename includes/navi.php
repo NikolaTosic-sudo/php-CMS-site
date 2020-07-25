@@ -19,12 +19,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
 
-                <li><a href="admin">Admin</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin">Admin</a></li>
 
-                <li><a href="registration.php">Registration</a></li>
+                <li class="nav-item"><a class="nav-link" href="registration.php">Registration</a></li>
 
-                <li>
-                    <a href="contact.php">Contact Me</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.php">Contact Me</a>
                 </li>
 
                 <?php
