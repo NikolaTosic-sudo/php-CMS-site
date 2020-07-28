@@ -45,7 +45,16 @@ include "includes/admin_header.php";
 
 
                         default:
-                            include "includes/view_all_comments.php";
+                            if ($_SESSION['user_role'] == 'admin') {
+
+                                include "includes/view_all_comments.php";
+
+                            } else {
+
+                                include "includes/view_all_comments_sub.php";
+
+                            }
+
                     }
 
 
