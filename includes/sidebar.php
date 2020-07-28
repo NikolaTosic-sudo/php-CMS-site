@@ -19,22 +19,51 @@
 
     <!--  Login  -->
 
-    <div class="well">
-        <h4>Login</h4>
 
-        <form action="includes/login.php" method="post">
-            <div class="form-group">
-                <input type="text" name="username" class="form-control" placeholder="Enter Username">
-            </div>
-            <div class="input-group">
-                <input type="password" name="password" class="form-control" placeholder="Enter Password">
-                <span class="input-group-btn">
+    <?php
+
+    if (!isset($_SESSION['username'])) {
+
+
+        ?>
+
+        <div class="well">
+            <h4>Login</h4>
+
+            <form action="includes/login.php" method="post">
+                <div class="form-group">
+                    <input type="text" name="username" class="form-control" placeholder="Enter Username">
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                    <span class="input-group-btn">
                     <button class="btn btn-primary" name="login" type="submit">Log In</button>
                 </span>
-            </div>
-        </form>
-        <!-- /.input-group -->
-    </div>
+                </div>
+            </form>
+            <!-- /.input-group -->
+        </div>
+
+
+        <?php
+
+    } else {    ?>
+
+        <div class="well">
+
+            <h3>Logged in as:   <strong><?php echo $_SESSION['username']?></strong></h3>
+
+            <a class="btn btn-primary" href="includes/logout.php">Log Out</a>
+
+
+        </div>
+
+
+
+    <?php
+    }
+
+    ?>
 
 
     <!-- Blog Categories Well -->
