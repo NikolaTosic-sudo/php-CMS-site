@@ -1,6 +1,8 @@
 <?php
 
 
+$new_user_password = '';
+
 if(isset($_POST['create_user'])) {
 
 
@@ -11,7 +13,11 @@ if(isset($_POST['create_user'])) {
     $user_email        = escape($_POST['user_email']);
     $user_password     = escape($_POST['user_password']);
 
+if ($user_password == '') {
 
+    $new_user_password = 'Try again, password cannot be empty';
+
+} else {
 
     $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
@@ -28,7 +34,7 @@ if(isset($_POST['create_user'])) {
 
 
 
-}
+}}
 
 
 
@@ -77,6 +83,7 @@ if(isset($_POST['create_user'])) {
     <div class="form-group">
         <label for="post_content">Password</label>
         <input type="password" class="form-control" name="user_password">
+        <?php echo "<p style='color: red'>$new_user_password<p>" ?>
     </div>
 
 
