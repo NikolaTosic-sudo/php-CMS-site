@@ -90,7 +90,7 @@ if(isset($_POST['create_post'])) {
             <option value="draft">Post Status</option>
             <?php
 
-                if ($_SESSION['user_role'] == 'admin'){
+                if (is_admin($_SESSION['username'])){
 
                     echo "<option value=\"published\">Published</option>";
 

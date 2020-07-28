@@ -46,7 +46,7 @@ include "includes/admin_header.php";
 
                         default:
 
-                            if ($_SESSION['user_role'] == 'admin'){
+                            if (is_admin($_SESSION['username'])){
 
                                 include "includes/view_all_posts.php";
 
@@ -55,7 +55,7 @@ include "includes/admin_header.php";
                                 include "includes/view_all_posts_sub.php";
 
                             }
-                            
+
                         }
 
 
