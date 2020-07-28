@@ -85,11 +85,18 @@ if(isset($_POST['create_post'])) {
     </div>
 
 
-
     <div class="form-group">
         <select name="post_status" id="">
             <option value="draft">Post Status</option>
-            <option value="published">Published</option>
+            <?php
+
+                if ($_SESSION['user_role'] == 'admin'){
+
+                    echo "<option value=\"published\">Published</option>";
+
+                }
+
+            ?>
             <option value="draft">Draft</option>
         </select>
     </div>
