@@ -26,6 +26,8 @@ if (isset($_SESSION['username'])) {
 
 }
 
+$new_user_password = '';
+
 if(isset($_POST['edit_user'])) {
 
 
@@ -36,28 +38,33 @@ if(isset($_POST['edit_user'])) {
     $user_email        = escape($_POST['user_email']);
     $user_password     = escape($_POST['user_password']);
 
+    if ($user_password == '') {
+
+        $new_user_password = 'Try again, password cannot be empty';
+
+    } else {
+
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_role = '{$user_role}', ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_password = '{$user_password}' ";
+        $query .= "WHERE user_id = {$the_user_id}";
 
 
-    $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+        $edit_user_query = mysqli_query($connection, $query);
 
-    $query = "UPDATE users SET ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "user_role = '{$user_role}', ";
-    $query .= "username = '{$username}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_password = '{$user_password}' ";
-    $query .= "WHERE user_id = {$the_user_id}";
+        confirmQuery($edit_user_query);
 
 
-    $edit_user_query = mysqli_query($connection, $query);
-
-    confirmQuery($edit_user_query);
+        echo "Profile Updated";
 
 
-    echo "Profile Updated";
-
-
+    }
 
 }
 
@@ -137,6 +144,7 @@ if(isset($_POST['edit_user'])) {
                         <div class="form-group">
                             <label for="post_content">Password</label>
                             <input type="password" class="form-control" name="user_password" value="">
+                            <?php echo "<p style='color: red'>$new_user_password<p>" ?>
                         </div>
 
 

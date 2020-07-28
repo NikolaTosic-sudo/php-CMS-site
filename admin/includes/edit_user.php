@@ -34,26 +34,32 @@ if(isset($_POST['edit_user'])) {
 
     $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
+    $new_user_password = '';
+
+    if ($user_password == '') {
+
+        $new_user_password = 'Try again, password cannot be empty';
+
+    } else {
+
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_role = '{$user_role}', ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_password = '{$hashed_password}' ";
+        $query .= "WHERE user_id = {$the_user_id}";
 
 
-    $query = "UPDATE users SET ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "user_role = '{$user_role}', ";
-    $query .= "username = '{$username}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_password = '{$hashed_password}' ";
-    $query .= "WHERE user_id = {$the_user_id}";
+        $edit_user_query = mysqli_query($connection, $query);
+
+        confirmQuery($edit_user_query);
 
 
-    $edit_user_query = mysqli_query($connection, $query);
+        echo "User Updated: " . " " . "<a href='users.php'>View Users</a> ";
 
-    confirmQuery($edit_user_query);
-
-
-    echo "User Updated: " . " " . "<a href='users.php'>View Users</a> ";
-
-
+    }
 
 }
 
@@ -117,6 +123,7 @@ if(isset($_POST['edit_user'])) {
     <div class="form-group">
         <label for="post_content">Password</label>
         <input type="password" class="form-control" name="user_password" value="">
+        <?php echo "<p style='color: red'>$new_user_password<p>" ?>
     </div>
 
 
