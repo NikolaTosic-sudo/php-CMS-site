@@ -67,7 +67,7 @@
 
                 $count = ceil($count / 5);
 
-                $post_count_query .=  "LIMIT $page_1, 5";
+                $post_count_query .=  " LIMIT $page_1, 5";
 
                 $select_all_posts = mysqli_query($connection, $post_count_query);
 
