@@ -20,6 +20,8 @@ while($row = mysqli_fetch_assoc($select_users)) {
 
 }
 
+$new_user_password = '';
+
 
 if(isset($_POST['edit_user'])) {
 
@@ -33,8 +35,6 @@ if(isset($_POST['edit_user'])) {
 
 
     $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
-
-    $new_user_password = '';
 
     if ($user_password == '') {
 
