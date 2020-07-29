@@ -46,7 +46,7 @@
 
                 else if (is_admin($_SESSION['username'])) {
 
-                    $post_count_query = "SELECT * FROM posts";
+                    $post_count_query = "SELECT * FROM posts ";
 
                 } else {
 
