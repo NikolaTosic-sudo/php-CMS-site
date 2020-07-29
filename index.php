@@ -58,6 +58,7 @@
 
                 $count = mysqli_num_rows($find_count);
 
+
                 if($count < 1) {
 
                     echo "<h2 class='text-center text-danger'>NO POSTS AVAILABLE</h2>";
@@ -66,11 +67,9 @@
 
                 $count = ceil($count / 5);
 
+                $post_count_query .=  "LIMIT $page_1, 5";
 
-
-                $query = "SELECT * FROM posts LIMIT $page_1, 5";
-
-                $select_all_posts = mysqli_query($connection, $query);
+                $select_all_posts = mysqli_query($connection, $post_count_query);
 
                 while($row = mysqli_fetch_assoc($select_all_posts)) {
                     $post_id = $row['post_id'];
