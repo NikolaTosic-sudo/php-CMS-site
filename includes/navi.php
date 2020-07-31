@@ -27,22 +27,22 @@
                 ?>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Admin <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Admin <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="admin/index.php"><i class="fa fa-fw fa-user"></i>Dashboard</a>
+                            <a href="admin/index.php">Dashboard</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="admin/posts.php"><i class="fa fa-fw fa-power-off"></i>View All Posts</a>
+                            <a href="admin/posts.php">View All Posts</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="admin/posts.php?source=add_post"><i class="fa fa-fw fa-power-off"></i>Add Post</a>
+                            <a href="admin/posts.php?source=add_post">Add Post</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="admin/comments.php"><i class="fa fa-fw fa-power-off"></i>View All Comments</a>
+                            <a href="admin/comments.php">View All Comments</a>
                         </li>
                     </ul>
                 </li>
