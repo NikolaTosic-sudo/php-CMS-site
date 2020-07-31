@@ -19,27 +19,44 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
 
-                <li class="nav-item"><a class="nav-link" href="admin">Admin</a></li>
+                <?php
 
-                <li class="nav-item"><a class="nav-link" href="registration.php">Registration</a></li>
+                if (isset($_SESSION['username'])){
+
+
+                ?>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Admin <b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="background-color: #191919">
+                        <li>
+                            <a href="admin/index.php"><i class="fa fa-fw fa-user"></i>Dashboard</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="admin/posts.php"><i class="fa fa-fw fa-power-off"></i>View All Posts</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="admin/posts.php?source=add_post"><i class="fa fa-fw fa-power-off"></i>Add Post</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="admin/comments.php"><i class="fa fa-fw fa-power-off"></i>View All Comments</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+
+                <?php } ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="registration.php">Registration</a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact Me</a>
                 </li>
-
-                <?php
-
-                        if (isset($_SESSION['username'])) {
-
-                ?>
-
-                <li class="nav-item-">
-                    <a href="admin/posts.php?source=add_post">Add Post</a>
-                </li>
-
-                <?php
-                    }
-                ?>
 
                 <?php
 
