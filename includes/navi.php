@@ -29,6 +29,20 @@
 
                 <?php
 
+                        if (isset($_SESSION['username'])) {
+
+                ?>
+
+                <li class="nav-item-">
+                    <a href="admin/posts.php?source=add_post">Add Post</a>
+                </li>
+
+                <?php
+                    }
+                ?>
+
+                <?php
+
 //                if (isset($_SESSION['user_role'])) {
 //
 //                    echo "<li><a href='admin/posts.php?source=edit_post&p_id=5'>Edit Post</a></li>";
