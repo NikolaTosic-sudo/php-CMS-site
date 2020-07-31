@@ -43,16 +43,18 @@
 
                 <?php
 
-                if (is_admin($_SESSION['username'])) {
+                if (isset($_SESSION['username'])){
 
-                    if (isset($_GET['p_id'])) {
+                    if (is_admin($_SESSION['username'])) {
 
-                        $the_post_id = escape($_GET['p_id']);
+                        if (isset($_GET['p_id'])) {
 
-                        echo "<li><a href='admin/posts.php?source=edit_post&p_id=$the_post_id'>Edit Post</a></li>";
+                            $the_post_id = escape($_GET['p_id']);
 
-                    }
-                }
+                            echo "<li><a href='admin/posts.php?source=edit_post&p_id=$the_post_id'>Edit Post</a></li>";
+
+                        }
+                    }}
 
                 ?>
 
