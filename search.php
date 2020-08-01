@@ -15,7 +15,14 @@
 
             <h1 class="page-header">
                 All posts
-                <small>in <?php echo $_POST['search'] ?></small>
+                <small>in <?php
+
+                    if (isset($_POST['search'])) {
+                        echo $_POST['search'];
+                        }
+
+                        ?>
+                    </small>
             </h1>
 
             <?php
