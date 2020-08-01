@@ -24,8 +24,7 @@ function addCategory() {
         if ($cat_title == "" || empty($cat_title)){
             echo "<p style='color: red'>This field should not be empty</p>";
         } else {
-            $query = "INSERT INTO categories(cat_title) ";
-            $query .= "VALUE('{$cat_title}')";
+            $query = "INSERT INTO categories(cat_title) VALUE('{$cat_title}')";
 
             $create_category = mysqli_query($connection, $query);
 
