@@ -14,8 +14,8 @@
         <div class="col-md-8">
 
             <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
+                All posts
+                <small>in <?php echo $_POST['search'] ?></small>
             </h1>
 
             <?php
@@ -34,7 +34,16 @@
                 $count = mysqli_num_rows($search_query);
 
                 if ($count == 0) {
-                    echo "<h1>NO RESULT </h1>";
+
+                    if (isset($_SESSION['username'])) {
+
+                        echo "<h2 style='color: red'>Sorry, no posts found in your search</h2>" . "<a href='admin/posts.php?source=add_post'>Add post here</a>";
+
+                    } else {
+
+                        echo "<h2 style='color: red'>Sorry, no posts found in your search</h2>";
+
+                    }
                 } else {
 
                     while($row = mysqli_fetch_assoc($search_query)) {
