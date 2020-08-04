@@ -42,55 +42,62 @@
      $username = escape($_POST['username']);
      $email = escape($_POST['email']);
      $password = escape($_POST['password']);
+     $repeated_password = escape($_POST['repeated_password']);
 
+     if ($password !== $repeated_password) {
 
-     if (strlen($username) < 4) {
-
-         echo "<script>alert('Username has to be longer than 4 characters')</script>";
+         echo "<script>alert('Passwords have to be equal')</script>";
 
      } else {
 
 
-         if (alreadyExists('username', $username)) {
+         if (strlen($username) < 4) {
 
-             echo "<script>alert('Username already exists')</script>";
-
-         } else if (alreadyExists('user_email', $email)) {
-
-             echo "<script>alert('Email already exists')</script>";
+             echo "<script>alert('Username has to be longer than 4 characters')</script>";
 
          } else {
 
-             if (!empty($username) && !empty($email) && !empty($password)) {
 
-                 $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+             if (alreadyExists('username', $username)) {
 
-                 $query = "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) ";
-                 $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber', '', '', '')";
+                 echo "<script>alert('Username already exists')</script>";
 
-                 $registrationQuery = mysqli_query($connection, $query);
+             } else if (alreadyExists('user_email', $email)) {
 
-                 if (!$registrationQuery) {
-
-                     die("QUERY FAILED" . mysqli_error($connection));
-
-                 } else {
-
-                     echo "<script>alert('Successfully Registered')</script>";
-
-                 }
+                 echo "<script>alert('Email already exists')</script>";
 
              } else {
 
-                 echo "<script> alert('FIELDS CAN NOT BE EMPTY')</script>";
+                 if (!empty($username) && !empty($email) && !empty($password)) {
 
-             }
+                     $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+
+                     $query = "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) ";
+                     $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber', '', '', '')";
+
+                     $registrationQuery = mysqli_query($connection, $query);
+
+                     if (!$registrationQuery) {
+
+                         die("QUERY FAILED" . mysqli_error($connection));
+
+                     } else {
+
+                         echo "<script>alert('Successfully Registered')</script>";
+
+                     }
+
+                 } else {
+
+                     echo "<script> alert('FIELDS CAN NOT BE EMPTY')</script>";
+
+                 }
 
 
 
 
 
- }}}
+ }}}}
 
 
  ?>
@@ -117,6 +124,10 @@
                          <div class="form-group">
                              <label for="password" style="font-size: 17px">Enter Your Password:</label>
                             <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="repeated_password" style="font-size: 17px">Repeat Your Password:</label>
+                            <input type="password" name="repeated_password" class="form-control" placeholder="Password">
                         </div>
                 
                         <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
