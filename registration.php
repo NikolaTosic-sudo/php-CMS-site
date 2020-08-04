@@ -104,18 +104,18 @@
         <div class="row">
             <div class="col-xs-6 col-xs-offset-3">
                 <div class="form-wrap">
-                <h1>Register</h1>
+                    <h1 class="text-center" style="margin-bottom: 30px; border-bottom: black 1px solid; padding-bottom: 20px">Register</h1>
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
                         <div class="form-group">
-                            <label for="username" class="sr-only">username</label>
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">
+                            <label for="username" style="font-size: 17px">Enter Desired Username:</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Username">
                         </div>
                          <div class="form-group">
-                            <label for="email" class="sr-only">Email</label>
+                             <label for="email" style="font-size: 17px">Enter Your Email:</label>
                             <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com">
                         </div>
                          <div class="form-group">
-                            <label for="password" class="sr-only">Password</label>
+                             <label for="password" style="font-size: 17px">Enter Your Password:</label>
                             <input type="password" name="password" id="key" class="form-control" placeholder="Password">
                         </div>
                 
