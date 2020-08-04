@@ -48,11 +48,18 @@
                 </li>
                 <li>
 
-                <?php } ?>
+                <?php }
+
+                if (!isset($_SESSION['username'])){
+
+
+                ?>
 
                 <li class="nav-item">
                     <a class="nav-link" href="registration.php">Registration</a>
                 </li>
+
+                    <?php } ?>
 
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact Me</a>
