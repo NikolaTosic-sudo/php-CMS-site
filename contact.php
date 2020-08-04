@@ -28,18 +28,21 @@ if (isset($_POST['submit'])) {
             <div class="row">
                 <div class="col-xs-6 col-xs-offset-3">
                     <div class="form-wrap">
-                        <h1>Contact Me</h1>
+                        <h1 class="text-center" style="margin-bottom: 30px; border-bottom: black 1px solid; padding-bottom: 20px">Contact Me</h1>
                         <form role="form" action="" method="post" id="login-form" autocomplete="off">
 
                             <div class="form-group">
+                                <label for="email" style="font-size: 17px">Enter Your Email:</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="Enter Your Email">
                             </div>
 
                             <div class="form-group">
+                                <label for="subject" style="font-size: 17px">Enter Subject:</label>
                                 <input type="text" name="subject" id="subject" class="form-control" placeholder="Enter Your Subject">
                             </div>
 
                             <div class="form-group">
+                                <label for="body" style="font-size: 17px"></label>
                                 <textarea class="form-control" rows="7" name="body" id="text"></textarea>
                             </div>
 
