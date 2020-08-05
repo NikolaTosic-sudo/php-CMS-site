@@ -26,13 +26,15 @@
 
             $get_cat_title = escape($_POST['cat_title']);
 
-            $query = "UPDATE categories SET cat_title = '{$get_cat_title}' WHERE cat_id={$cat_id}";
+            $stmt = mysqli_prepare($connection, "UPDATE categories SET cat_title = ? WHERE cat_id= ?");
 
-            $update_query = mysqli_query($connection, $query);
+            mysqli_stmt_bind_param($stmt, 'si', $get_cat_title, $cat_id);
+
+            mysqli_stmt_execute($stmt);
 
             header("Location: categories.php");
 
-            if (!$update_query){
+            if (!$stmt){
                 die("QUERY FAILED" . mysqli_error());
             }}
 
