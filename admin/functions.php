@@ -36,6 +36,7 @@ function addCategory() {
             }
         }
 
+        mysqli_stmt_close($stmt);
     }
 }
 

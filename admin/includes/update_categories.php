@@ -36,7 +36,10 @@
 
             if (!$stmt){
                 die("QUERY FAILED" . mysqli_error());
-            }}
+            }
+
+            mysqli_stmt_close($stmt);
+        }
 
         ?>
     </div>
