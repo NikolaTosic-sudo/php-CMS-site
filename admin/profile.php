@@ -6,27 +6,23 @@ if (isset($_SESSION['username'])) {
 
         $username = $_SESSION['username'];
 
-        $query = "SELECT * FROM users WHERE username = '{$username}' ";
+        $stmt = mysqli_prepare($connection, "SELECT user_id, user_firstname, user_lastname, user_role, username, user_email, user_password FROM users WHERE username = ? ");
 
-        $select_user_profile = mysqli_query($connection, $query);
+        mysqli_stmt_bind_param($stmt, 's', $username);
 
-        confirmQuery($select_user_profile);
+        mysqli_stmt_execute($stmt);
 
-        while ($row = mysqli_fetch_assoc($select_user_profile)){
+        mysqli_stmt_bind_result($stmt, $the_user_id, $user_firstname, $user_lastname, $user_role, $username, $user_email, $user_password);
 
-            $the_user_id = $row['user_id'];
-            $user_firstname    = $row['user_firstname'];
-            $user_lastname     = $row['user_lastname'];
-            $user_role         = $row['user_role'];
-            $username          = $row['username'];
-            $user_email        = $row['user_email'];
-            $user_password     = $row['user_password'];
+        mysqli_stmt_fetch($stmt);
 
-        }
+        mysqli_stmt_close($stmt);
 
 }
 
 $new_user_password = '';
+
+$msg = '';
 
 if(isset($_POST['edit_user'])) {
 
@@ -46,22 +42,13 @@ if(isset($_POST['edit_user'])) {
 
         $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_password = '{$user_password}' ";
-        $query .= "WHERE user_id = {$the_user_id}";
+        $stmt = mysqli_prepare($connection, "UPDATE users SET user_firstname = ?, user_lastname = ?, user_role = ?, username = ?, user_email = ?, user_password = ? WHERE user_id = ?");
 
+        mysqli_stmt_bind_param($stmt, 'ssssssi', $user_firstname, $user_lastname, $user_role, $username, $user_email, $user_password, $the_user_id);
 
-        $edit_user_query = mysqli_query($connection, $query);
+        mysqli_stmt_execute($stmt);
 
-        confirmQuery($edit_user_query);
-
-
-        echo "Profile Updated";
+        $msg = "Your Profile Has Been Updated. Click to " . " " . "<a href='users.php'>View Users</a> ";
 
 
     }
@@ -88,6 +75,8 @@ if(isset($_POST['edit_user'])) {
                         Welcome to admin
                         <small><?php echo $_SESSION['firstname'] ?></small>
                     </h1>
+
+                    <?php echo $msg ?>
 
                     <form action="" method="post" enctype="multipart/form-data">
 
