@@ -10,37 +10,41 @@ if (isset($_POST['checkBoxArray'])) {
 
             case 'publish':
 
-                $query = "UPDATE posts SET post_status = 'published' WHERE post_id = $checkBoxValue";
+                $stmt = mysqli_prepare($connection, "UPDATE posts SET post_status = ? WHERE post_id = ?");
 
-                $update_to_publish = mysqli_query($connection, $query);
+                $published = 'published';
 
-                confirmQuery($update_to_publish);
+                mysqli_stmt_bind_param($stmt, 'si', $published, $checkBoxValue);
+
+                mysqli_stmt_execute($stmt);
 
                 break;
 
             case 'draft':
 
-                $query = "UPDATE posts SET post_status = 'draft' WHERE post_id = $checkBoxValue";
+                $stmt = mysqli_prepare($connection, "UPDATE posts SET post_status = ? WHERE post_id = ?");
 
-                $update_to_draft = mysqli_query($connection, $query);
+                $draft = 'draft';
 
-                confirmQuery($update_to_draft);
+                mysqli_stmt_bind_param($stmt, 'si', $draft, $checkBoxValue);
+
+                mysqli_stmt_execute($stmt);
 
                 break;
 
             case 'delete':
 
-                $query = "DELETE FROM posts WHERE post_id = $checkBoxValue";
+                $stmt = mysqli_prepare($connection, "DELETE FROM posts WHERE post_id = ?");
 
-                $delete_post = mysqli_query($connection, $query);
+                mysqli_stmt_bind_param($stmt, 'i', $checkBoxValue);
 
-                confirmQuery($delete_post);
-
+                mysqli_stmt_execute($stmt);
 
         }
 
     }
 
+    mysqli_stmt_close($stmt);
 
 }
 
@@ -123,28 +127,34 @@ if (isset($_POST['checkBoxArray'])) {
         echo "<td>$post_author</td>";
         echo "<td>$post_title</td>";
 
-        $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-        $select_categories = mysqli_query($connection,$query);
+        $stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories WHERE cat_id = ?");
 
-        confirmQuery($select_categories);
+        mysqli_stmt_bind_param($stmt, 'i', $post_category_id);
 
+        mysqli_stmt_execute($stmt);
 
-            while($row = mysqli_fetch_assoc($select_categories )) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
-                echo "<td>$cat_title</td>";
-            }
+        mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
 
+        mysqli_stmt_fetch($stmt);
+
+        mysqli_stmt_close($stmt);
+
+        echo "<td>$cat_title</td>";
         echo "<td>$post_status</td>";
         echo "<td><img width='100px' height='70px' src='../images/$post_image' alt='image'></td>";
         echo "<td>$post_tags</td>";
 
-        $comment_query = "SELECT * FROM comments WHERE comment_post_id =  $post_id";
+        $comment_stmt = mysqli_prepare($connection, "SELECT * FROM comments WHERE comment_post_id =  ?");
 
-        $send_comment_query = mysqli_query($connection, $comment_query);
+        mysqli_stmt_bind_param($comment_stmt, 'i', $post_id);
 
-        $count_comments = mysqli_num_rows($send_comment_query);
+        mysqli_stmt_execute($comment_stmt);
 
+        mysqli_stmt_store_result($comment_stmt);
+
+        $count_comments = mysqli_stmt_num_rows($comment_stmt);
+
+        mysqli_stmt_close($comment_stmt);
 
 
         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
@@ -173,12 +183,13 @@ if (isset($_POST['checkBoxArray'])) {
 
         $the_post_id = $_GET['delete'];
 
-        $query = "DELETE FROM posts WHERE post_id = $post_id";
+        $stmt = mysqli_prepare($connection, "DELETE FROM posts WHERE post_id = ?");
 
-        $delete_query = mysqli_query($connection, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $the_post_id);
+
+        mysqli_stmt_execute($stmt);
 
         header("Location: posts.php");
-
 
     }
 
