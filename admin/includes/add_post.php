@@ -21,13 +21,15 @@ if(isset($_POST['create_post'])) {
     move_uploaded_file($post_image_temp, "../images/$post_image" );
 
 
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date,post_image,post_content,post_tags,post_status, post_views_count) ";
+    $stmt = mysqli_prepare($connection, "INSERT INTO posts(post_category_id, post_title, post_author, post_date,post_image,post_content,post_tags,post_status, post_views_count) VALUES (?, ?, ?, now(), ?, ?, ?, ?, ?)");
 
-    $query .= "VALUES({$post_category_id},'{$post_title}', '{$post_author}', now(),'{$post_image}','{$post_content}','{$post_tags}', '{$post_status}', 0) ";
+    $post_views = 0;
 
-    $create_post_query = mysqli_query($connection, $query);
+    mysqli_stmt_bind_param($stmt, 'issssssi', $post_category_id, $post_title, $post_author, $post_image, $post_content, $post_tags, $post_status, $post_views);
 
-    confirmQuery($create_post_query);
+    mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
 
     $the_post_id = mysqli_insert_id($connection);
 
@@ -55,11 +57,11 @@ if(isset($_POST['create_post'])) {
 
             <?php
 
-            $query = "SELECT * FROM categories";
+            $query = "SELECT cat_id, cat_title FROM categories";
+
             $select_categories = mysqli_query($connection,$query);
 
             confirmQuery($select_categories);
-
 
             while($row = mysqli_fetch_assoc($select_categories )) {
                 $cat_id = $row['cat_id'];
