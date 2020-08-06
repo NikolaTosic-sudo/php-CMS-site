@@ -65,9 +65,13 @@ if (isset($_GET['change_to_admin'])) {
 
     $the_user_id = escape($_GET['change_to_admin']);
 
-    $query = "UPDATE users SET user_role = 'admin' WHERE user_id = $the_user_id";
+    $stmt = mysqli_prepare($connection, "UPDATE users SET user_role = ? WHERE user_id = ?");
 
-    $change_to_admin_query = mysqli_query($connection, $query);
+    $admin = 'admin';
+
+    mysqli_stmt_bind_param($stmt, 'si', $admin, $the_user_id);
+
+    mysqli_stmt_execute($stmt);
 
     header("Location: users.php");
 
@@ -78,9 +82,13 @@ if (isset($_GET['change_to_sub'])) {
 
     $the_user_id = escape($_GET['change_to_sub']);
 
-    $query = "UPDATE users SET user_role = 'subscriber' WHERE user_id = $the_user_id";
+    $stmt = mysqli_prepare($connection, "UPDATE users SET user_role = ? WHERE user_id = ?");
 
-    $change_to_sub_query = mysqli_query($connection, $query);
+    $sub = 'subscriber';
+
+    mysqli_stmt_bind_param($stmt, 'si', $sub, $the_user_id);
+
+    mysqli_stmt_execute($stmt);
 
     header("Location: users.php");
 
@@ -95,9 +103,11 @@ if (isset($_GET['delete'])) {
 
             $the_user_id = mysqli_real_escape_string($connection, escape($_GET['delete']));
 
-            $query = "DELETE FROM users WHERE user_id = $the_user_id";
+            $stmt = mysqli_prepare($connection, "DELETE FROM users WHERE user_id = ?");
 
-            $delete_query = mysqli_query($connection, $query);
+            mysqli_stmt_bind_param($stmt, 'i', $the_user_id);
+
+            mysqli_stmt_execute($stmt);
 
             header("Location: users.php");
 
