@@ -26,39 +26,49 @@
 
                 if ($_SESSION['username'] == null){
 
-                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status = 'published'";
+                    $stmt = mysqli_prepare($connection, "SELECT post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_id = ? AND post_status = ?");
+
+                    $published = 'published';
+
+                    mysqli_stmt_bind_param($stmt, 'is', $the_post_id, $published);
+
+                    mysqli_stmt_execute($stmt);
 
                 }
 
                 else if (is_admin($_SESSION['username'])) {
 
-                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+                    $stmt = mysqli_prepare($connection, "SELECT post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_id = ?");
+
+                    mysqli_stmt_bind_param($stmt, 'i', $the_post_id);
+
+                    mysqli_stmt_execute($stmt);
 
                 } else {
 
-                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status = 'published'";
+                    $stmt = mysqli_prepare($connection, "SELECT post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_id = ? AND post_status = ?");
+
+                    $published = 'published';
+
+                    mysqli_stmt_bind_param($stmt, 'is', $the_post_id, $published);
+
+                    mysqli_stmt_execute($stmt);
 
                 }
 
-                $select_all_posts = mysqli_query($connection, $query);
+                mysqli_stmt_store_result($stmt);
 
+                $count = mysqli_stmt_num_rows($stmt);
 
-                if (mysqli_num_rows($select_all_posts) < 1) {
+                if ($count < 1) {
 
                     echo "<h2 class='text-center text-danger'>This post is not published yet, sorry</h2>";
 
                 } else {
 
+                    mysqli_stmt_bind_result($stmt, $post_title, $post_author, $post_date, $post_image, $post_content);
 
-
-
-                while($row = mysqli_fetch_assoc($select_all_posts)) {
-                    $post_title = $row['post_title'];
-                    $post_author = $row['post_author'];
-                    $post_date = $row['post_date'];
-                    $post_image = $row['post_image'];
-                    $post_content = $row['post_content'];
-
+                while(mysqli_stmt_fetch($stmt)):
 
                 ?>
 
@@ -77,10 +87,10 @@
                 <hr>
 
 
-                <?php
+                <?php endwhile;
 
 
-            }}} else {
+            }} else {
 
                 header("Location: index.php");
 
@@ -99,7 +109,7 @@
     <!-- /.row -->
     <?php
 
-    if (mysqli_num_rows($select_all_posts) >= 1) {
+    if ($count >= 1) {
 
         include "comments.php";
 
