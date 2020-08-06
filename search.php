@@ -32,13 +32,15 @@
 
                 $search = escape($_POST['search']);
 
-                $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
+                $stmt = mysqli_prepare($connection, "SELECT post_id ,post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_tags LIKE ?");
 
-                $search_query = mysqli_query($connection, $query);
+                mysqli_stmt_bind_param($stmt, 's', $search);
 
-                confirmQuery($search_query);
+                mysqli_stmt_execute($stmt);
 
-                $count = mysqli_num_rows($search_query);
+                mysqli_stmt_store_result($stmt);
+
+                $count = mysqli_stmt_num_rows($stmt);
 
                 if ($count == 0) {
 
@@ -53,12 +55,9 @@
                     }
                 } else {
 
-                    while($row = mysqli_fetch_assoc($search_query)) {
-                        $post_title = $row['post_title'];
-                        $post_author = $row['post_author'];
-                        $post_date = $row['post_date'];
-                        $post_image = $row['post_image'];
-                        $post_content = $row['post_content'];
+                    mysqli_stmt_bind_result($stmt, $post_id,$post_title, $post_author, $post_date, $post_image, $post_content);
+
+                    while(mysqli_stmt_fetch($stmt)):
 
                         ?>
 
@@ -74,12 +73,12 @@
                         <img class="img-responsive" src="images/<?php echo $post_image?>" alt="">
                         <hr>
                         <p><?php echo $post_content?></p>
-                        <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                         <hr>
 
 
-                        <?php }
+                        <?php endwhile;
                 }
 
             }
