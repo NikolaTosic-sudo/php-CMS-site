@@ -37,18 +37,19 @@
         echo "<td>$comment_email</td>";
         echo "<td>$comment_status</td>";
 
-        $query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
+        $stmt = mysqli_prepare($connection, "SELECT post_id, post_title FROM posts WHERE post_id = ?");
 
-        $select_post_id_query = mysqli_query($connection, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $comment_post_id);
 
-        while($row = mysqli_fetch_assoc($select_post_id_query)) {
-            $post_id = $row['post_id'];
-            $post_title = $row['post_title'];
+        mysqli_stmt_execute($stmt);
 
-            echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
+        mysqli_stmt_bind_result($stmt, $post_id, $post_title);
 
-        }
+        mysqli_stmt_fetch($stmt);
 
+        mysqli_stmt_close($stmt);
+
+        echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
         echo "<td>$comment_date</td>";
         echo "</tr>";
 
