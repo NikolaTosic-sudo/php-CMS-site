@@ -7,21 +7,18 @@ if(isset($_GET['p_id'])){
 }
 
 
-$query = "SELECT * FROM posts WHERE post_id = $the_post_id  ";
-$select_posts_by_id = mysqli_query($connection,$query);
+$stmt = mysqli_prepare($connection, "SELECT post_id, post_title, post_category_id, post_status, post_image, post_content, post_tags, post_comment_count, post_date FROM posts WHERE post_id = ? ");
 
-while($row = mysqli_fetch_assoc($select_posts_by_id)) {
-    $post_id            = $row['post_id'];
-    $post_title         = $row['post_title'];
-    $post_category_id   = $row['post_category_id'];
-    $post_status        = $row['post_status'];
-    $post_image         = $row['post_image'];
-    $post_content       = $row['post_content'];
-    $post_tags          = $row['post_tags'];
-    $post_comment_count = $row['post_comment_count'];
-    $post_date          = $row['post_date'];
+mysqli_stmt_bind_param($stmt, 'i', $the_post_id);
 
-}
+mysqli_stmt_execute($stmt);
+
+mysqli_stmt_bind_result($stmt, $post_id, $post_title, $post_category_id, $post_status, $post_image, $post_content, $post_tags, $post_comment_count, $post_date);
+
+mysqli_stmt_fetch($stmt);
+
+mysqli_stmt_close($stmt);
+
 
 if (isset($_POST['views'])) {
 
@@ -58,27 +55,14 @@ if(isset($_POST['update_post'])) {
 
 
     }
-    $post_title = mysqli_real_escape_string($connection, $post_title);
 
+    $stmt = mysqli_prepare($connection, "UPDATE posts SET post_title  = ?, post_category_id = ?, post_date = now(), post_status = ?, post_tags = ?, post_content = ?, post_image = ? WHERE post_id = ?");
 
-    $query = "UPDATE posts SET ";
-    $query .="post_title  = '{$post_title}', ";
-    $query .="post_category_id = '{$post_category_id}', ";
-    $query .="post_date   =  now(), ";
-    $query .="post_status = '{$post_status}', ";
-    $query .="post_tags   = '{$post_tags}', ";
-    $query .="post_content= '{$post_content}', ";
-    $query .="post_image  = '{$post_image}' ";
-    $query .= "WHERE post_id = {$the_post_id} ";
+    mysqli_stmt_bind_param($stmt, 'ssssssi', $post_title, $post_category_id, $post_status, $post_tags, $post_content, $post_image, $the_post_id);
 
-    $update_post = mysqli_query($connection,$query);
-
-    confirmQuery($update_post);
+    mysqli_stmt_execute($stmt);
 
     echo "<p class='bg-success'>Post Updated. <a href='../post.php?p_id={$the_post_id}'>View Post </a> or <a href='posts.php'>Edit More Posts</a></p>";
-
-
-
 
 }
 
@@ -128,13 +112,6 @@ if(isset($_POST['update_post'])) {
 
 
                 }
-
-
-
-
-
-
-
 
 
             }
