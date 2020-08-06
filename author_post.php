@@ -33,18 +33,15 @@
 
             <?php
 
-            $query = "SELECT * FROM posts WHERE post_author = '{$the_post_author}'";
+            $stmt = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_author = ?");
 
-            $select_all_posts = mysqli_query($connection, $query);
+            mysqli_stmt_bind_param($stmt, 's', $the_post_author);
 
-            while($row = mysqli_fetch_assoc($select_all_posts)) {
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
-                $post_date = $row['post_date'];
-                $post_image = $row['post_image'];
-                $post_content = $row['post_content'];
+            mysqli_stmt_execute($stmt);
 
+            mysqli_stmt_bind_result($stmt, $post_id, $post_title, $post_author, $post_date, $post_image, $post_content);
+
+            while(mysqli_stmt_fetch($stmt)):
 
                 ?>
 
@@ -63,9 +60,7 @@
 
                 <?php
 
-
-            }
-
+                endwhile;
 
             ?>
 
