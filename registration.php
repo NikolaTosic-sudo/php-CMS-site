@@ -72,14 +72,17 @@
 
                      $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-                     $query = "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) ";
-                     $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber', '', '', '')";
+                     $stmt = mysqli_prepare($connection, "INSERT INTO users (username, user_email, user_password, user_role, user_firstname, user_lastname, user_image) VALUES (?, ?, ?, ?, '', '', '')");
 
-                     $registrationQuery = mysqli_query($connection, $query);
+                     $sub = 'subscriber';
 
-                     if (!$registrationQuery) {
+                     mysqli_stmt_bind_param($stmt, 'ssss',$username, $email, $password, $sub);
 
-                         die("QUERY FAILED" . mysqli_error($connection));
+                     $execute = mysqli_stmt_execute($stmt);
+
+                     if (!$execute) {
+
+                         die("QUERY FAILED" . mysqli_stmt_error($stmt));
 
                      } else {
 
