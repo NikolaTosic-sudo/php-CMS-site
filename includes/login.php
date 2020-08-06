@@ -11,23 +11,15 @@
          $username = escape($_POST['username']);
          $password = escape($_POST['password']);
 
-         $query = "SELECT * FROM users WHERE username = '{$username}'";
+         $stmt = mysqli_prepare($connection, "SELECT user_id, username, user_password, user_firstname, user_lastname, user_role FROM users WHERE username = ?");
 
-         $select_user_query = mysqli_query($connection, $query);
+         mysqli_stmt_bind_param($stmt, 's', $username);
 
-         if (!$select_user_query) {
-             die("QUERY FAILED " . mysqli_error($connection));
-         }
+         mysqli_stmt_execute($stmt);
 
-         while ($row = mysqli_fetch_assoc($select_user_query)) {
+         mysqli_stmt_bind_result($stmt, $db_user_id, $db_username, $db_password, $db_user_firstname, $db_user_lastname, $db_user_role);
 
-             $db_user_id = $row['user_id'];
-             $db_username = $row['username'];
-             $db_password = $row['user_password'];
-             $db_user_firstname = $row['user_firstname'];
-             $db_user_lastname = $row['user_lastname'];
-             $db_user_role = $row['user_role'];
-
+         mysqli_stmt_fetch($stmt);
 
              if (password_verify($password, $db_password)) {
 
@@ -41,8 +33,6 @@
              } else {
                  header("Location: ../index.php");
              }
-
-         }
     }
 
 
