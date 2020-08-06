@@ -13,15 +13,13 @@
 
                     if (!empty($comment_author) && !empty($comment_content) && !empty($comment_email)) {
 
-                        $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-                        $query .= "VALUES ($the_post_id, '$comment_author', '$comment_email', '$comment_content', 'unapproved', now())";
+                        $stmt = mysqli_prepare($connection, "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES (?, ?, ?, ?, ?, now())");
 
-                        $create_comment_query = mysqli_query($connection, $query);
+                        $unapproved = 'unapproved';
 
-                        if (!$create_comment_query){
-                            die('QUERY FAILED' . mysqli_error($connection));
-                        }
+                        mysqli_stmt_bind_param($stmt, 'issss', $the_post_id, $comment_author, $comment_email, $comment_content, $unapproved);
 
+                        mysqli_stmt_execute($stmt);
 
 
                     } else {
@@ -66,17 +64,17 @@
                      <?php
 
 
-                     $query = "SELECT * FROM comments WHERE comment_post_id = {$the_post_id} ";
-                     $query .= "AND comment_status = 'approved' ";
-                     $query .= "ORDER BY comment_id DESC ";
-                     $select_comment_query = mysqli_query($connection, $query);
+                     $stmt = mysqli_prepare($connection, "SELECT comment_date, comment_content, comment_author FROM comments WHERE comment_post_id = ? AND comment_status = ? ORDER BY comment_id DESC");
 
-                     confirmQuery($select_comment_query);
+                     $approved = 'approved';
 
-                     while ($row = mysqli_fetch_array($select_comment_query)) {
-                         $comment_date   = $row['comment_date'];
-                         $comment_content= $row['comment_content'];
-                         $comment_author = $row['comment_author'];
+                     mysqli_stmt_bind_param($stmt, 'is', $the_post_id, $approved);
+
+                     mysqli_stmt_execute($stmt);
+
+                     mysqli_stmt_bind_result($stmt, $comment_date, $comment_content, $comment_author);
+
+                     while (mysqli_stmt_fetch($stmt)):
 
                      ?>
 
@@ -97,4 +95,4 @@
                          </div>
                      </div>
 
-        <?php  } ?>
+        <?php  endwhile; ?>
