@@ -21,18 +21,13 @@ if ($user_password == '') {
 
     $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
-    $query = "INSERT INTO users(user_firstname, user_lastname, user_role,username,user_email,user_password, user_image) ";
+    $stmt = mysqli_prepare($connection, "INSERT INTO users(user_firstname, user_lastname, user_role,username,user_email,user_password, user_image) VALUES (?, ?, ?, ?, ?, ?, '')");
 
-    $query .= "VALUES('{$user_firstname}','{$user_lastname}','{$user_role}','{$username}','{$user_email}', '{$user_password}', '') ";
+    mysqli_stmt_bind_param($stmt, 'ssssss',$user_firstname, $user_lastname, $user_role, $username, $user_email, $user_password);
 
-    $create_user_query = mysqli_query($connection, $query);
-
-    confirmQuery($create_user_query);
-
+    mysqli_stmt_execute($stmt);
 
     echo "User Created: " . " " . "<a href='users.php'>View Users</a> ";
-
-
 
 }}
 
