@@ -71,9 +71,11 @@
 
         <?php
 
-        $query = "SELECT * FROM categories";
+        $stmt = mysqli_prepare($connection, "SELECT cat_title, cat_id FROM categories");
 
-        $select_categories_sidebar = mysqli_query($connection, $query);
+        mysqli_stmt_execute($stmt);
+
+        mysqli_stmt_bind_result($stmt, $cat_title, $cat_id);
 
         ?>
         <h4>Blog Categories</h4>
@@ -82,15 +84,11 @@
                 <ul class="list-unstyled">
 
                     <?php
-
-                    while($row = mysqli_fetch_assoc($select_categories_sidebar)) {
-                        $cat_title = $row['cat_title'];
-                        $cat_id = $row['cat_id'];
+                    while(mysqli_stmt_fetch($stmt)):
 
                         echo "<li><a href='category.php?category_id={$cat_id}'>$cat_title</a></li>";
 
-                    }
-
+                    endwhile;
                     ?>
                 </ul>
             </div>
