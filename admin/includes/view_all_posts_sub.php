@@ -43,29 +43,34 @@
             echo "<td>$post_author</td>";
             echo "<td>$post_title</td>";
 
-            $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-            $select_categories = mysqli_query($connection,$query);
+            $stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories WHERE cat_id = ?");
 
-            confirmQuery($select_categories);
+            mysqli_stmt_bind_param($stmt, 'i', $post_category_id);
 
+            mysqli_stmt_execute($stmt);
 
-            while($row = mysqli_fetch_assoc($select_categories )) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
-                echo "<td>$cat_title</td>";
-            }
+            mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
 
+            mysqli_stmt_fetch($stmt);
+
+            mysqli_stmt_close($stmt);
+
+            echo "<td>$cat_title</td>";
             echo "<td>$post_status</td>";
             echo "<td><img width='100px' height='70px' src='../images/$post_image' alt='image'></td>";
             echo "<td>$post_tags</td>";
 
-            $comment_query = "SELECT * FROM comments WHERE comment_post_id =  $post_id";
+            $comment_stmt = mysqli_prepare($connection, "SELECT * FROM comments WHERE comment_post_id =  ?");
 
-            $send_comment_query = mysqli_query($connection, $comment_query);
+            mysqli_stmt_bind_param($comment_stmt, 'i', $post_id);
 
-            $count_comments = mysqli_num_rows($send_comment_query);
+            mysqli_stmt_execute($comment_stmt);
 
+            mysqli_stmt_store_result($comment_stmt);
 
+            $count_comments = mysqli_stmt_num_rows($comment_stmt);
+
+            mysqli_stmt_close($comment_stmt);
 
             echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
             echo "<td>$post_date</td>";
