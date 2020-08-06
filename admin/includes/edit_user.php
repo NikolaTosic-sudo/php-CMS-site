@@ -5,20 +5,17 @@ if (isset($_GET['u_id'])) {
     $the_user_id = $_GET['u_id'];
 }
 
-$query = "SELECT * FROM users WHERE user_id = {$the_user_id}";
+$stmt = mysqli_prepare($connection, "SELECT user_firstname, user_lastname, user_role, username, user_email, user_password FROM users WHERE user_id = ?");
 
-$select_users = mysqli_query($connection, $query);
+mysqli_stmt_bind_param($stmt, 'i', $the_user_id);
 
-while($row = mysqli_fetch_assoc($select_users)) {
+mysqli_stmt_execute($stmt);
 
-    $user_firstname    = $row['user_firstname'];
-    $user_lastname     = $row['user_lastname'];
-    $user_role         = $row['user_role'];
-    $username          = $row['username'];
-    $user_email        = $row['user_email'];
-    $user_password     = $row['user_password'];
+mysqli_stmt_bind_result($stmt, $user_firstname, $user_lastname, $user_role, $username, $user_email, $user_password);
 
-}
+mysqli_stmt_fetch($stmt);
+
+mysqli_stmt_close($stmt);
 
 $new_user_password = '';
 
@@ -42,20 +39,11 @@ if(isset($_POST['edit_user'])) {
 
     } else {
 
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_password = '{$hashed_password}' ";
-        $query .= "WHERE user_id = {$the_user_id}";
+        $stmt = mysqli_prepare($connection, "UPDATE users SET user_firstname = ?, user_lastname = ?, user_role = ?, username = ?, user_email = ?, user_password = ? WHERE user_id = ?");
 
+        mysqli_stmt_bind_param($stmt, 'ssssssi', $user_firstname, $user_lastname, $user_role, $username, $user_email, $hashed_password, $the_user_id);
 
-        $edit_user_query = mysqli_query($connection, $query);
-
-        confirmQuery($edit_user_query);
-
+        mysqli_stmt_execute($stmt);
 
         echo "User Updated: " . " " . "<a href='users.php'>View Users</a> ";
 
