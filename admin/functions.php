@@ -70,15 +70,14 @@ function deleteCategory() {
 
         $get_cat_id = escape($_GET['delete']);
 
-        $query = "DELETE FROM categories WHERE cat_id={$get_cat_id}";
+        $stmt = mysqli_prepare($connection, "DELETE FROM categories WHERE cat_id= ?");
 
-        $delete_query = mysqli_query($connection, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $get_cat_id);
+
+        mysqli_stmt_execute($stmt);
 
         header("Location: categories.php");
 
-        if (!$delete_query){
-            die("QUERY FAILED" . mysqli_error());
-        }
     }
 }
 
@@ -142,15 +141,17 @@ function is_admin($username) {
 
     global $connection;
 
-    $query = "SELECT user_role FROM users WHERE username = '$username'";
+    $stmt = mysqli_prepare($connection, "SELECT user_role FROM users WHERE username = ?");
 
-    $result = mysqli_query($connection, $query);
+    mysqli_stmt_bind_param($stmt, 's', $username);
 
-    confirmQuery($result);
+    mysqli_stmt_execute($stmt);
 
-    $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_bind_result($stmt, $user_role);
 
-    if($row['user_role'] == 'admin') {
+    mysqli_stmt_fetch($stmt);
+
+    if($user_role == 'admin') {
 
         return true;
 
@@ -166,13 +167,15 @@ function alreadyExists($row, $object) {
 
     global $connection;
 
-    $query = "SELECT $row FROM users WHERE $row = '$object'";
+    $stmt = mysqli_prepare($connection, "SELECT $row FROM users WHERE $row = ?");
 
-    $result = mysqli_query($connection, $query);
+    mysqli_stmt_bind_param($stmt, 's', $object);
 
-    confirmQuery($result);
+    mysqli_stmt_execute($stmt);
 
-    if (mysqli_num_rows($result) > 0) {
+    mysqli_stmt_store_result($stmt);
+
+    if (mysqli_stmt_num_rows($stmt) > 0) {
 
         return true;
 
