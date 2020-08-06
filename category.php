@@ -17,15 +17,17 @@
 
             if (isset($_GET['category_id'])) {
 
-            $category_id = $_GET['category_id'];
+                $category_id = $_GET['category_id'];
 
-            $query = "SELECT * FROM categories WHERE cat_id = $category_id";
+                $stmt = mysqli_prepare($connection, "SELECT cat_title FROM categories WHERE cat_id = ?");
 
-            $select_category = mysqli_query($connection, $query);
+                mysqli_stmt_bind_param($stmt, 'i', $category_id);
 
-            $row = mysqli_fetch_assoc($select_category);
+                mysqli_stmt_execute($stmt);
 
-            $category_title = $row['cat_title'];
+                mysqli_stmt_bind_result($stmt, $category_title);
+
+                mysqli_stmt_fetch($stmt);
 
             ?>
 
@@ -35,6 +37,8 @@
             </h1>
 
             <?php
+
+                mysqli_stmt_close($stmt);
 
 
             if ($_SESSION['username'] == null) {
