@@ -57,19 +57,15 @@ if(isset($_POST['create_post'])) {
 
             <?php
 
-            $query = "SELECT cat_id, cat_title FROM categories";
+            $stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories");
 
-            $select_categories = mysqli_query($connection,$query);
+            mysqli_stmt_execute($stmt);
 
-            confirmQuery($select_categories);
+            mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
 
-            while($row = mysqli_fetch_assoc($select_categories )) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
-
+            while(mysqli_stmt_fetch($stmt)) {
 
                 echo "<option value='$cat_id'>{$cat_title}</option>";
-
 
             }
 
