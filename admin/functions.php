@@ -34,9 +34,10 @@ function addCategory() {
             if (!$stmt){
                 die("QUERY FAILED" . mysqli_error($connection));
             }
-        }
 
-        mysqli_stmt_close($stmt);
+            mysqli_stmt_close($stmt);
+
+        }
     }
 }
 
@@ -44,13 +45,13 @@ function findCategories() {
 
     global $connection;
 
-    $query = "SELECT * FROM categories";
+    $stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories");
 
-    $select_categories = mysqli_query($connection, $query);
+    mysqli_stmt_execute($stmt);
 
-    while($row = mysqli_fetch_assoc($select_categories)) {
-        $cat_id = $row['cat_id'];
-        $cat_title = $row['cat_title'];
+    mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
+
+    while(mysqli_stmt_fetch($stmt)) {
 
         echo "<tr>";
         echo "<td>$cat_id</td>";
@@ -127,12 +128,15 @@ function recordCount($table) {
 
     global $connection;
 
-    $query = "SELECT * FROM $table";
-    $select_all_from_table = mysqli_query($connection, $query);
+    $stmt = mysqli_prepare($connection, "SELECT * FROM $table");
 
-    $result = mysqli_num_rows($select_all_from_table);
+    mysqli_stmt_execute($stmt);
 
-    confirmQuery($select_all_from_table);
+    mysqli_stmt_store_result($stmt);
+
+    $result = mysqli_stmt_num_rows($stmt);
+
+    confirmQuery($stmt);
 
     return $result;
 }
