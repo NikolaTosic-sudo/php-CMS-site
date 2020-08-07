@@ -92,9 +92,15 @@
 
             }
 
-            while (mysqli_stmt_fetch($stmt)):
+            mysqli_stmt_store_result($stmt);
 
-//                    echo "<h2 class='text-center text-danger'>NO POSTS IN THIS CATEGORY AVAILABLE</h2>";
+            if (mysqli_stmt_num_rows($stmt) == 0) {
+
+                echo "<h2 class='text-center text-danger'>NO POSTS IN THIS CATEGORY AVAILABLE</h2>";
+
+            } else {
+
+            while (mysqli_stmt_fetch($stmt)):
 
             ?>
 
@@ -121,8 +127,10 @@
 
             endwhile;
 
+                    mysqli_stmt_close($stmt);
+                    
+                }
 
-                mysqli_stmt_close($stmt);
             } else {
 
                 header("Location: index.php");
