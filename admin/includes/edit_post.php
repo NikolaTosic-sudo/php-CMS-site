@@ -22,9 +22,13 @@ mysqli_stmt_close($stmt);
 
 if (isset($_POST['views'])) {
 
-    $query = "UPDATE posts SET post_views_count = 0 WHERE post_id = $post_id";
+    $stmt = mysqli_prepare($connection, "UPDATE posts SET post_views_count = ? WHERE post_id = ?");
 
-    $reset_views = mysqli_query($connection, $query);
+    $count = 0;
+
+    mysqli_stmt_bind_param($stmt, 'is', $count, $post_id);
+
+    $reset_views = mysqli_stmt_execute($stmt);
 
 }
 
