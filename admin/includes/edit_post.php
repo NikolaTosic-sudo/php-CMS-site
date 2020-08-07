@@ -48,15 +48,15 @@ if(isset($_POST['update_post'])) {
 
     if(empty($post_image)) {
 
-        $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
-        $select_image = mysqli_query($connection,$query);
+        $stmt = mysqli_prepare($connection, "SELECT post_image FROM posts WHERE post_id = ? ");
 
-        while($row = mysqli_fetch_array($select_image)) {
+        mysqli_stmt_bind_param($stmt, 'i', $the_post_id);
 
-            $post_image = $row['post_image'];
+        mysqli_stmt_execute($stmt);
 
-        }
+        mysqli_stmt_bind_result($stmt, $post_image);
 
+        mysqli_stmt_fetch($stmt);
 
     }
 
@@ -93,16 +93,13 @@ if(isset($_POST['update_post'])) {
 
             <?php
 
-            $query = "SELECT * FROM categories ";
-            $select_categories = mysqli_query($connection,$query);
+            $query = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories ");
 
-            confirmQuery($select_categories);
+            mysqli_stmt_execute($stmt);
 
+            mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
 
-            while($row = mysqli_fetch_assoc($select_categories )) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
-
+            while(mysqli_stmt_fetch($stmt)) {
 
                 if($cat_id == $post_category_id) {
 
