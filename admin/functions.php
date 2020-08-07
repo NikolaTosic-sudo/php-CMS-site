@@ -17,10 +17,6 @@ function addCategory() {
 
             mysqli_stmt_execute($stmt);
 
-            if (!$stmt){
-                die("QUERY FAILED" . mysqli_error($connection));
-            }
-
             mysqli_stmt_close($stmt);
 
         }
