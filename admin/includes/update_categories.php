@@ -9,12 +9,16 @@
             $cat_id = escape($_GET['edit']);
 
 
-            $query = "SELECT * FROM categories WHERE cat_id = $cat_id";
-            $select_categories_id = mysqli_query($connection, $query);
+            $stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories WHERE cat_id = ?");
 
-            while($row = mysqli_fetch_assoc($select_categories_id)) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
+            mysqli_stmt_bind_param($stmt, 'i', $cat_id);
+
+            mysqli_stmt_execute($stmt);
+
+            mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
+
+            while(mysqli_stmt_fetch($stmt)) {
+
                 ?>
                 <input value="<?php if (isset($cat_title)) echo $cat_title?>" type="text" class="form-control" name="cat_title">
 
