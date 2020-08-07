@@ -20,21 +20,13 @@
 
     <?php
 
-    $query = "SELECT * FROM users";
+    $stmt = mysqli_prepare($connection, "SELECT user_id, username, user_password, user_firstname, user_lastname, user_email, user_image, user_role FROM users");
 
-    $select_users = mysqli_query($connection, $query);
+    mysqli_stmt_execute($stmt);
 
-    while($row = mysqli_fetch_assoc($select_users)) {
+    mysqli_stmt_bind_result($stmt, $user_id, $username, $user_password, $user_firstname, $user_lastname, $user_email, $user_image, $user_role);
 
-    $user_id = $row['user_id'];
-    $username = $row['username'];
-    $user_password = $row['user_password'];
-    $user_firstname = $row['user_firstname'];
-    $user_lastname = $row['user_lastname'];
-    $user_email = $row['user_email'];
-    $user_image = $row['user_image'];
-    $user_role = $row['user_role'];
-
+    while(mysqli_stmt_fetch($stmt)) {
 
     echo "<tr>";
     echo "<td>$user_id</td>";
