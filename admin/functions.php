@@ -1,19 +1,5 @@
 <?php
 
-function confirmQuery($result) {
-
-    global $connection;
-
-    if(!$result ) {
-
-        die("QUERY FAILED ." . mysqli_error($connection));
-
-
-    }
-
-
-}
-
 function addCategory() {
 
     global $connection;
@@ -135,8 +121,6 @@ function recordCount($table) {
     mysqli_stmt_store_result($stmt);
 
     $result = mysqli_stmt_num_rows($stmt);
-
-    confirmQuery($stmt);
 
     return $result;
 }
