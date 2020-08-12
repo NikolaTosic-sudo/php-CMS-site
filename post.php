@@ -106,6 +106,23 @@
         <?php include "includes/sidebar.php"  ?>
 
     </div>
+
+    <?php
+
+        if ($count >= 1){
+
+     ?>
+
+    <div class="text-center">
+
+        <h4>Do you like this content ?</h4>
+        <p>To see all posts by <?php echo $post_author?> click <a href="author_post.php?author=<?php echo $post_author ?>&p_id=<?php echo $the_post_id ?>">here.</a></p>
+
+    </div>
+
+   <?php } ?>
+
+    <hr>
     <!-- /.row -->
     <?php
 
