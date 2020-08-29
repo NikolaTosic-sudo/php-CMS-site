@@ -107,6 +107,8 @@
 
     }
 
+    include "contact_widget.php";
+
 
     ?>
 
