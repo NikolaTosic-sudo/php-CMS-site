@@ -38,7 +38,17 @@
 
                 }
 
-                $count = showAllPosts($_SESSION['username'], $page_1);
+                if (isset($_SESSION['username'])){
+
+                    $count = showAllPosts($_SESSION['username'], $page_1);
+
+                } else {
+                    
+                    $_SESSION['username'] = null;
+                    
+                    $count = showAllPosts($_SESSION['username'], $page_1);
+                    
+                };
                 
 
                 ?>
